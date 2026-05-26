@@ -1,0 +1,31 @@
+enable
+configure terminal
+
+hostname HELI-CHARLIE
+
+interface loopback0
+ ip address 192.168.4.1 255.255.255.255
+
+interface gigabitEthernet0/0
+ description ENLACE_HELI-CHARLIE_HELI-BRAVO
+ ip address 10.0.3.2 255.255.255.252
+ ip ospf cost 50
+ ip ospf network point-to-point
+ no shutdown
+
+interface gigabitEthernet0/1
+ description ENLACE_HELI-CHARLIE_BASE
+ ip address 10.0.4.2 255.255.255.252
+ ip ospf cost 50
+ ip ospf network point-to-point
+ no shutdown
+
+router ospf 1
+ router-id 4.4.4.4
+ passive-interface loopback0
+ network 10.0.3.0 0.0.0.3 area 0
+ network 10.0.4.0 0.0.0.3 area 0
+ network 192.168.4.1 0.0.0.0 area 0
+
+end
+write memory

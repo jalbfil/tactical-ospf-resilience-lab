@@ -1,0 +1,31 @@
+enable
+configure terminal
+
+hostname HELI-ALFA
+
+interface loopback0
+ ip address 192.168.2.1 255.255.255.255
+
+interface gigabitEthernet0/0
+ description ENLACE_HELI-ALFA_BASE
+ ip address 10.0.1.2 255.255.255.252
+ ip ospf cost 10
+ ip ospf network point-to-point
+ no shutdown
+
+interface gigabitEthernet0/1
+ description ENLACE_HELI-ALFA_HELI-BRAVO
+ ip address 10.0.2.1 255.255.255.252
+ ip ospf cost 10
+ ip ospf network point-to-point
+ no shutdown
+
+router ospf 1
+ router-id 2.2.2.2
+ passive-interface loopback0
+ network 10.0.1.0 0.0.0.3 area 0
+ network 10.0.2.0 0.0.0.3 area 0
+ network 192.168.2.1 0.0.0.0 area 0
+
+end
+write memory
